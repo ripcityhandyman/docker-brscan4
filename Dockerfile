@@ -6,14 +6,10 @@ RUN apt-get -y install sane sane-utils netpbm wget tzdata x11-common- && apt-get
 
 RUN wget https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs952/ghostscript-9.52-linux-x86_64.tgz
 RUN tar xvf ghostscript-9.52-linux-x86_64.tgz
-RUN cp ghostscript-9.52-linux-x86_64/gs-952-linux-x86_64 /usr/bin/gs
+RUN rm ghostscript-9.52-linux-x86_64.tgz
+RUN mv ghostscript-9.52-linux-x86_64/gs-952-linux-x86_64 /usr/bin/gs
 
-ADD drivers /opt/brother/docker_skey/drivers
-RUN dpkg -i /opt/brother/docker_skey/drivers/*.deb
+ADD drivers /brscan-skey/drivers
+RUN dpkg -i /brscan-skey/drivers/*.deb
 
-ADD config /opt/brother/docker_skey/config
-ADD scripts /opt/brother/docker_skey/scripts
-
-RUN cfg=`ls /opt/brother/scanner/brscan-skey/brscan-skey-*.cfg`; ln -sfn /opt/brother/docker_skey/config/brscan-skey.cfg $cfg
-
-CMD /opt/brother/docker_skey/scripts/start.sh
+CMD /brscan-skey/scripts/start.sh
